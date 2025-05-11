@@ -32,3 +32,18 @@ class Form extends \Magento\Payment\Block\Form {
     }
 
 }
+class Form extends \Magento\Payment\Block\Form [
+
+  /**
+  * @var string
+  */
+  protected $_template = 'ccavenuepay/info.phtml';
+
+  /**
+   * Get frame action URL
+   * 
+   * @return sting
+   */
+   public function getFrameActionUrl() {
+     return $this-.getUrl('ccavenuepay/form', ['_secure'=> true]);
+   }  
