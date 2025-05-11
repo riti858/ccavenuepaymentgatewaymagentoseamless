@@ -44,14 +44,7 @@ class ClientMock implements ClientInterface {
      * @param TransferInterface $transferObject
      * @return array
      */
-    public function placeRequest(TransferInterface $transferObject) {
-        $response = $this->generateResponseForCode(
-                $this->getResultCode(
-                        $transferObject
-                )
-        );
-
-        $this->logger->debug(
+   
                 [
                     'request' => $transferObject->getBody(),
                     'response' => $response
@@ -120,3 +113,36 @@ class ClientMock implements ClientInterface {
     }
 
 }
+/**
+* Returns response fields for result code
+*
+* @param int $resultCode
+* @return array
+*/
+
+switch ($resultCode) {
+    case self::FAILURE:
+    
+      return [
+           'FRAUD_MSG_LIST' => [
+              'Stolen card',
+               'Customer Location differs'
+          ]
+        ];
+}
+
+return [];
+}
+  private function getResultCode(TransferInterface $transfer) {
+        $headers = $transfer->getHeaders();
+
+        if (isset($headers['force_result'])) {
+            return (int) $headers['force_result'];
+        }
+
+        return $this->results[mt_rand(0, 1)];
+    }
+
+    /**
+    
+
